@@ -1,0 +1,1324 @@
+/* ============================================================
+   HOLIDAE — STYLESHEET  (holidae_CSS.css)
+   ============================================================
+   Structure:
+   1.  Reset & CSS Variables
+   2.  Base / Body
+   3.  Navigation
+   4.  Mobile Menu
+   5.  Hero Section
+   6.  Search Box
+   7.  Stats Bar
+   8.  Shared Section Styles
+   9.  Destination Cards
+   10. Featured Banner
+   11. Photo Gallery
+   12. Booking Calculator
+   13. How It Works Steps
+   14. Tech Section
+   15. Footer
+   16. Animations
+   17. MEDIA QUERIES (responsive breakpoints)
+   ============================================================ */
+
+
+/* ────────────────────────────────────────────────────────────
+   1. RESET & CSS VARIABLES
+   CSS variables (custom properties) let me define colours and
+   fonts once here, then reuse them throughout the stylesheet.
+   If a colour needs to change, I only update it in one place.
+──────────────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box; /* Includes padding in element width */
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  /* Colour palette */
+  --sky:      #0A1628; /* Dark navy — main background */
+  --ocean:    #0D3B6E; /* Mid navy — card backgrounds */
+  --wave:     #1A6FA8; /* Medium blue */
+  --foam:     #5BB8E8; /* Light blue — labels */
+  --sun:      #F5A623; /* Gold — call-to-action buttons, highlights */
+  --white:    #FFFFFF;
+  --muted:    #8FA3BC; /* Subdued blue-grey — secondary text */
+  --card-bg:  #0F2440; /* Slightly lighter navy for cards */
+
+  /* Typography */
+  --font-display: 'Playfair Display', Georgia, serif; /* Headings */
+  --font-body:    'Outfit', sans-serif;               /* Body text */
+
+  /* Border radius */
+  --radius:    16px;
+  --radius-sm: 10px;
+}
+
+
+/* ────────────────────────────────────────────────────────────
+   2. BASE / BODY
+──────────────────────────────────────────────────────────── */
+html {
+  scroll-behavior: smooth; /* Smooth scrolling when clicking anchor links */
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--sky);
+  color: var(--white);
+  overflow-x: hidden; /* Prevents horizontal scroll on mobile */
+}
+
+
+/* ────────────────────────────────────────────────────────────
+   3. NAVIGATION BAR
+   Fixed to top of viewport.
+   backdrop-filter: blur creates a frosted-glass effect.
+──────────────────────────────────────────────────────────── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100; /* Sits above all other content */
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(10, 22, 40, 0.88); /* Semi-transparent navy */
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.logo {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--white);
+  text-decoration: none;
+}
+
+.logo span {
+  color: var(--sun); /* "dae" appears in gold */
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+
+.nav-links a {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover {
+  color: var(--white);
+}
+
+/* "Book Now" button in the nav */
+.nav-cta {
+  background: var(--sun) !important;
+  color: var(--sky) !important;
+  padding: 8px 20px;
+  border-radius: 100px;
+  font-weight: 600 !important;
+}
+
+/* Hamburger icon — hidden on desktop, shown on mobile */
+.hamburger {
+  display: none; /* Hidden by default — shown in media query below */
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.hamburger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--white);
+}
+
+
+/* ────────────────────────────────────────────────────────────
+   4. MOBILE FULL-SCREEN MENU
+   Hidden by default.
+   JavaScript adds the class "open" to show it.
+──────────────────────────────────────────────────────────── */
+.mobile-menu {
+  display: none; /* Hidden until JS adds class "open" */
+  position: fixed;
+  inset: 0; /* Covers the entire screen */
+  background: var(--sky);
+  z-index: 99;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2.5rem;
+}
+
+.mobile-menu.open {
+  display: flex; /* JS adds this class to show the menu */
+}
+
+.mobile-menu a {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--white);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.mobile-menu a:hover,
+.mobile-menu a.gold {
+  color: var(--sun);
+}
+
+.menu-close {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.5rem;
+  background: none;
+  border: none;
+  color: var(--white);
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+
+/* ────────────────────────────────────────────────────────────
+   5. HERO SECTION
+──────────────────────────────────────────────────────────── */
+.hero {
+  min-height: 100vh; /* Full screen height */
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 7rem 1.5rem 4rem;
+  overflow: hidden;
+}
+
+/* Background photo — set as background-image via CSS */
+.hero-photo {
+  position: absolute;
+  inset: 0;
+  background: url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=1600&q=80')
+              center / cover no-repeat;
+}
+
+/* Dark overlay on top of the photo so text is readable */
+.hero-photo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(10, 22, 40, 0.6)  0%,
+    rgba(10, 22, 40, 0.4)  50%,
+    rgba(10, 22, 40, 0.85) 100%
+  );
+}
+
+/* Star field container — dots injected by JavaScript */
+.stars {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none; /* Stars don't block clicks */
+}
+
+.star {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  animation: twinkle 3s infinite alternate;
+}
+
+/* Small pill badge above the heading */
+.hero-badge {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(245, 166, 35, 0.15);
+  border: 1px solid rgba(245, 166, 35, 0.35);
+  border-radius: 100px;
+  padding: 6px 16px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--sun);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  animation: fadeUp 0.6s ease 0.1s both;
+}
+
+.hero-badge::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--sun);
+}
+
+/* Main h1 heading */
+h1 {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-display);
+  font-size: clamp(2.8rem, 8vw, 6rem); /* Scales with viewport width */
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  margin-bottom: 1.25rem;
+  animation: fadeUp 0.6s ease 0.25s both;
+}
+
+h1 em {
+  font-style: italic;
+  color: var(--sun); /* "holiday" appears in gold italics */
+}
+
+.hero-sub {
+  position: relative;
+  z-index: 1;
+  font-size: clamp(15px, 2vw, 18px);
+  color: rgba(255, 255, 255, 0.8);
+  max-width: 52ch;
+  line-height: 1.7;
+  margin: 0 auto 2.5rem;
+  font-weight: 300;
+  animation: fadeUp 0.6s ease 0.4s both;
+}
+
+
+/* ────────────────────────────────────────────────────────────
+   6. SEARCH BOX
+   CSS Grid layout: 3 fields + 1 button on desktop.
+   Collapses to stacked column on mobile (media query below).
+──────────────────────────────────────────────────────────── */
+.search-box {
+  position: relative;
+  z-index: 1;
+  background: rgba(10, 22, 40, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius);
+  padding: 1rem;
+  width: 100%;
+  max-width: 800px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr auto; /* 3 equal cols + auto button */
+  backdrop-filter: blur(12px);
+  animation: fadeUp 0.6s ease 0.55s both;
+}
+
+.search-field {
+  padding: 0.75rem 1.25rem;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.search-field:last-of-type {
+  border-right: none;
+}
+
+.search-field label {
+  display: block;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--foam);
+  margin-bottom: 4px;
+}
+
+.search-field input,
+.search-field select {
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 15px;
+  width: 100%;
+  cursor: pointer;
+}
+
+.search-field select option {
+  background: var(--sky); /* Dropdown background on desktop */
+}
+
+.search-btn {
+  background: var(--sun);
+  color: var(--sky);
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 0 1.5rem;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  min-height: 52px; /* Touch-friendly minimum height */
+  margin-left: 0.5rem;
+  transition: opacity 0.2s;
+}
+
+.search-btn:hover {
+  opacity: 0.9;
+}
+
+
+/* ────────────────────────────────────────────────────────────
+   7. STATS BAR
+──────────────────────────────────────────────────────────── */
+.stats-bar {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  padding-top: 1.5rem;
+  animation: fadeUp 0.6s ease 0.7s both;
+}
+
+.stat-num {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.stat-label {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+
+/* ────────────────────────────────────────────────────────────
+   8. SHARED SECTION STYLES
+──────────────────────────────────────────────────────────── */
+section {
+  padding: 5rem 1.5rem;
+}
+
+.section-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--foam);
+  margin-bottom: 0.75rem;
+}
+
+h2 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+}
+
+.section-sub {
+  font-size: 16px;
+  color: var(--muted);
+  line-height: 1.7;
+  max-width: 50ch;
+  font-weight: 300;
+}
+
+
+/* ────────────────────────────────────────────────────────────
+   9. DESTINATION CARDS
+   CSS Grid: 3 columns on desktop.
+   Collapses to 2 then 1 column via media queries below.
+──────────────────────────────────────────────────────────── */
+.destinations {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.destinations-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.view-all {
+  color: var(--sun);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: gap 0.2s;
+}
+
+.view-all:hover {
+  gap: 10px; /* Arrow shifts right on hover */
+}
+
+/* The card grid — 3 equal columns */
+.cards-scroll {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+/* Individual card */
+.dest-card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  cursor: pointer;
+
+  /* Start invisible — JS adds "visible" class on scroll */
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.5s ease, transform 0.5s ease, box-shadow 0.3s;
+}
+
+.dest-card.visible {
+  opacity: 1;
+  transform: translateY(0); /* Slides up into view */
+}
+
+.dest-card:hover {
+  transform: translateY(-6px) !important; /* Lifts on hover */
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
+}
+
+/* Card image container */
+.card-img {
+  height: 220px;
+  position: relative;
+  overflow: hidden;
+  background: var(--ocean); /* Fallback if image fails */
+}
+
+.card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Fills the area without stretching */
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.dest-card:hover .card-img img {
+  transform: scale(1.07); /* Subtle zoom on hover */
+}
+
+/* Gradient overlay so badge text is readable */
+.card-img-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 40%, rgba(10, 22, 40, 0.55) 100%);
+}
+
+/* Category badge on the card image */
+.card-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: rgba(10, 22, 40, 0.75);
+  backdrop-filter: blur(6px);
+  border-radius: 100px;
+  padding: 4px 12px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--sun);
+  border: 1px solid rgba(245, 166, 35, 0.3);
+}
+
+.card-body    { padding: 1.25rem; }
+
+.card-location {
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.card-title {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+  line-height: 1.2;
+}
+
+.card-desc {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.card-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.card-price        { font-size: 13px; color: var(--muted); }
+.card-price strong { font-size: 18px; color: var(--white); font-weight: 600; }
+.card-rating       { font-size: 13px; color: var(--sun); font-weight: 500; }
+
+
+/* ────────────────────────────────────────────────────────────
+   10. FEATURED DESTINATION BANNER
+──────────────────────────────────────────────────────────── */
+.featured-section {
+  padding-top: 0;
+}
+
+.featured-banner {
+  max-width: 1200px;
+  margin: 0 auto;
+  border-radius: var(--radius);
+  overflow: hidden;
+  position: relative;
+  height: 380px;
+  display: flex;
+  align-items: flex-end;
+}
+
+.featured-banner img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.featured-banner:hover img {
+  transform: scale(1.03);
+}
+
+/* Left-to-right dark gradient overlay */
+.featured-banner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(10, 22, 40, 0.88) 0%,
+    rgba(10, 22, 40, 0.3)  60%,
+    transparent            100%
+  );
+}
+
+.featured-content {
+  position: relative;
+  z-index: 1;
+  padding: 2.5rem 3rem;
+}
+
+.featured-tag {
+  display: inline-block;
+  background: var(--sun);
+  color: var(--sky);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 100px;
+  margin-bottom: 1rem;
+}
+
+.featured-content h3 {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 0.75rem;
+}
+
+.featured-content p {
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.75);
+  max-width: 40ch;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.featured-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--white);
+  color: var(--sky);
+  padding: 12px 24px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.featured-btn:hover {
+  opacity: 0.9;
+}
+
+
+/* ────────────────────────────────────────────────────────────
+   11. PHOTO GALLERY
+   CSS Grid mosaic: first image spans 2 rows on desktop.
+   Rearranges to a 2-column grid on smaller screens.
+──────────────────────────────────────────────────────────── */
+.gallery-section {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr; /* Wide left, two narrow right */
+  grid-template-rows: 200px 200px;
+  gap: 12px;
+  margin-top: 2.5rem;
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.gallery-item {
+  overflow: hidden;
+  position: relative;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.gallery-item:hover img {
+  transform: scale(1.06);
+}
+
+/* First image spans both rows, making a tall feature image */
+.gallery-item:first-child {
+  grid-row: 1 / 3;
+}
+
+/* Caption appears on hover */
+.gallery-caption {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: linear-gradient(transparent, rgba(10, 22, 40, 0.8));
+  padding: 1rem 0.75rem 0.75rem;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.gallery-item:hover .gallery-caption {
+  opacity: 1;
+}
+
+
+/* ────────────────────────────────────────────────────────────
+   12. BOOKING CALCULATOR
+   Split layout: photo on left, calculator on right.
+   Stacks vertically on mobile (media query below).
+──────────────────────────────────────────────────────────── */
+.book-section {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.booking-section {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Two equal halves */
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Left panel — photo with text overlay */
+.booking-photo {
+  position: relative;
+  overflow: hidden;
+  min-height: 400px;
+}
+
+.booking-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Dark gradient so text on photo is readable */
+.booking-photo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(10,22,40,0.2) 0%, rgba(10,22,40,0.75) 100%);
+}
+
+.booking-photo-text {
+  position: absolute;
+  bottom: 2rem; left: 2rem; right: 2rem;
+  z-index: 1;
+}
+
+.booking-photo-text h3 {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.booking-photo-text p {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.6;
+}
+
+.booking-perks {
+  list-style: none;
+  margin-top: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.booking-perks li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.perk-dot {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+}
+
+/* Right panel — calculator */
+.booking-calc {
+  padding: 3rem;
+}
+
+.calc-title {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  margin-bottom: 1.75rem;
+}
+
+/* Two steppers side by side */
+.calc-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.calc-field label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+/* Stepper control: [ − ] [ value ] [ + ] */
+.stepper {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.stepper button {
+  width: 44px;  /* Touch-friendly minimum size */
+  height: 44px;
+  background: none;
+  border: none;
+  color: var(--white);
+  font-size: 20px;
+  cursor: pointer;
+  transition: background 0.15s;
+  font-family: var(--font-body);
+}
+
+.stepper button:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.stepper-val {
+  flex: 1;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 500;
+  font-family: var(--font-display);
+}
+
+/* Price breakdown panel */
+.calc-breakdown {
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: var(--radius-sm);
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.breakdown-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: var(--muted);
+  padding: 5px 0;
+}
+
+.breakdown-row.total {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: 6px;
+  padding-top: 12px;
+  color: var(--white);
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.breakdown-row.total .val {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--sun);
+  line-height: 1;
+}
+
+/* Touch-friendly Book Now button: minimum 52px height */
+.book-btn {
+  width: 100%;
+  padding: 16px;
+  min-height: 52px;
+  background: var(--sun);
+  color: var(--sky);
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.book-btn:hover {
+  opacity: 0.9;
+}
+
+
+/* ────────────────────────────────────────────────────────────
+   13. HOW IT WORKS — STEPS
+──────────────────────────────────────────────────────────── */
+.how-section {
+  max-width: 1100px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.how-section .section-sub {
+  margin: 0 auto 3.5rem;
+}
+
+/* 4 columns on desktop */
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  position: relative;
+}
+
+/* Horizontal connector line between steps */
+.steps-grid::before {
+  content: '';
+  position: absolute;
+  top: 28px;
+  left: calc(12.5% + 28px);
+  right: calc(12.5% + 28px);
+  height: 1px;
+  background: linear-gradient(90deg, var(--wave), var(--foam), var(--wave));
+  opacity: 0.3;
+}
+
+/* Steps animate in on scroll — JS adds "visible" class */
+.step {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.step.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.step-num {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  background: var(--card-bg);
+  border: 1px solid rgba(91, 184, 232, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--foam);
+  margin: 0 auto 1.25rem;
+  position: relative;
+  z-index: 1; /* Sits above the connector line */
+}
+
+.step-title {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.step-desc {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+
+/* ────────────────────────────────────────────────────────────
+   14. TECH SECTION
+──────────────────────────────────────────────────────────── */
+.tech-bg {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.tech-section {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* 2-column grid on desktop → 1 column on mobile */
+.tech-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+  margin-top: 2.5rem;
+}
+
+/* Tech cards animate in on scroll */
+.tech-card {
+  background: var(--card-bg);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: var(--radius);
+  padding: 1.75rem;
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.5s, transform 0.5s;
+}
+
+.tech-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Large background number — decorative only */
+.tech-card::before {
+  content: attr(data-num);
+  position: absolute;
+  top: -10px; right: 16px;
+  font-family: var(--font-display);
+  font-size: 5rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.03);
+  line-height: 1;
+  pointer-events: none;
+}
+
+.tech-tag {
+  display: inline-block;
+  background: rgba(91, 184, 232, 0.12);
+  border: 1px solid rgba(91, 184, 232, 0.25);
+  color: var(--foam);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 100px;
+  margin-bottom: 1rem;
+}
+
+.tech-card h3 {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  margin-bottom: 0.6rem;
+  font-weight: 700;
+}
+
+.tech-card p {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.75;
+}
+
+.tech-card code {
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  color: var(--foam);
+}
+
+
+/* ────────────────────────────────────────────────────────────
+   15. FOOTER
+──────────────────────────────────────────────────────────── */
+footer {
+  background: rgba(0, 0, 0, 0.35);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 3rem 1.5rem;
+  text-align: center;
+}
+
+.footer-logo {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.footer-logo span {
+  color: var(--sun);
+}
+
+.footer-tagline {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 2rem;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  list-style: none;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.footer-links a {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 13px;
+  transition: color 0.2s;
+}
+
+.footer-links a:hover {
+  color: var(--white);
+}
+
+.footer-copy {
+  font-size: 12px;
+  color: rgba(143, 163, 188, 0.5);
+}
+
+
+/* ────────────────────────────────────────────────────────────
+   16. ANIMATIONS
+──────────────────────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes twinkle {
+  from { opacity: 0.1; }
+  to   { opacity: 0.7; }
+}
+
+
+/* ============================================================
+   17. MEDIA QUERIES — RESPONSIVE BREAKPOINTS
+   These are the core of the mobile-first requirement.
+   max-width: 900px = tablet
+   max-width: 768px = mobile phone
+   ============================================================ */
+
+/* ── TABLET (screens up to 900px wide) ── */
+@media (max-width: 900px) {
+
+  /* Cards: 3 cols → 2 cols */
+  .cards-scroll {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Steps: 4 cols → 2 cols */
+  .steps-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Hide the step connector line — doesn't work in 2-col layout */
+  .steps-grid::before {
+    display: none;
+  }
+
+  /* Tech grid: 2 cols → 1 col */
+  .tech-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Booking section: side-by-side → stacked */
+  .booking-section {
+    grid-template-columns: 1fr;
+  }
+
+  .booking-photo {
+    min-height: 260px;
+  }
+
+  /* Gallery: rearrange to 2-col */
+  .gallery-grid {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 180px 180px;
+  }
+
+  .gallery-item:first-child {
+    grid-row: auto;
+    grid-column: 1 / 3; /* Spans full width */
+  }
+}
+
+/* ── MOBILE PHONE (screens up to 768px wide) ── */
+@media (max-width: 768px) {
+
+  /* Navigation */
+  nav {
+    padding: 0.9rem 1.25rem;
+  }
+
+  /* Hide desktop nav links, show hamburger icon */
+  .nav-links {
+    display: none;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  /* Hero: reduce top padding to account for mobile nav */
+  .hero {
+    padding: 6rem 1.25rem 3rem;
+  }
+
+  /* Search box: stack fields vertically */
+  .search-box {
+    grid-template-columns: 1fr; /* Single column */
+  }
+
+  .search-field {
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 0.75rem 1rem;
+  }
+
+  .search-field:last-of-type {
+    border-bottom: none;
+  }
+
+  /* Search button: full width on mobile */
+  .search-btn {
+    margin-left: 0;
+    margin-top: 0.5rem;
+    width: 100%;
+  }
+
+  /* Stats bar: tighten spacing */
+  .stats-bar {
+    gap: 1.5rem;
+  }
+
+  /* Cards: 2 cols → 1 col */
+  .cards-scroll {
+    grid-template-columns: 1fr;
+  }
+
+  /* Reduce section padding */
+  section {
+    padding: 3.5rem 1.25rem;
+  }
+
+  /* Steps: 2 cols → 1 col */
+  .steps-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  /* Gallery: smaller heights */
+  .gallery-grid {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 160px 160px;
+  }
+
+  .gallery-item:first-child {
+    grid-column: 1 / 3;
+    grid-row: auto;
+  }
+
+  /* Featured banner: reduce text padding */
+  .featured-content {
+    padding: 1.75rem;
+  }
+
+  .featured-content h3 {
+    font-size: 1.6rem;
+  }
+
+  /* Booking calculator: single column steppers */
+  .booking-calc {
+    padding: 1.75rem 1.25rem;
+  }
+
+  .calc-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Bigger Book Now button on mobile — easier to tap */
+  .book-btn {
+    padding: 18px;
+    font-size: 16px;
+  }
+}
